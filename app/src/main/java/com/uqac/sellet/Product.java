@@ -1,6 +1,7 @@
 package com.uqac.sellet;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,7 +14,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -30,6 +33,9 @@ public class Product {
     String desc = "";
     String owner = null;
     double price = 0d;
+    List<String> picturesLinks = new ArrayList<String>();
+
+    ArrayList<Uri> picturesArray = new ArrayList<Uri>();
 
     private OnReadyListener readyListener;
 
@@ -56,6 +62,7 @@ public class Product {
         product.put("desc", desc);
         product.put("owner", owner);
         product.put("price", price);
+        product.put("pictures", picturesLinks);
 
         db.collection("products")
                 .add(product)
@@ -64,6 +71,14 @@ public class Product {
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
                         Toast.makeText(context, "Product published", Toast.LENGTH_SHORT).show();
+                        if(!picturesArray.isEmpty()){
+                            Toast.makeText(context, "Uploading pictures...", Toast.LENGTH_SHORT).show();
+                            PictureLoader pl = new PictureLoader();
+                            int i = 1;
+                            for (Uri picture: picturesArray) {
+                                pl.setPicture(context, picture, "products/"+documentReference.getId(), Integer.toString(i++));
+                            }
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -87,6 +102,8 @@ public class Product {
                         Product.this.desc = document.getString("desc");
                         Product.this.owner = document.getString("owner");
                         Product.this.price = document.getDouble("price");
+                        Product.this.picturesLinks = (List<String>) document.get("pictures");
+
                         if(readyListener != null){
                             readyListener.onReady(Product.this);
                         }
@@ -109,6 +126,7 @@ public class Product {
     @NonNull
     @Override
     public String toString() {
-        return "{"+id+", "+name+", "+desc+", "+owner+", "+price+"}";
+        return "{"+id+", "+name+", "+desc+", "+owner+", "+price+", "+ picturesLinks +"} ("+picturesArray+")";
     }
+
 }
