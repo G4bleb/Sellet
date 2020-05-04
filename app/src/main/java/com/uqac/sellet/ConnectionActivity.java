@@ -49,9 +49,6 @@ public class ConnectionActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
     }
     // [END on_start_check_user]
 
@@ -70,13 +67,12 @@ public class ConnectionActivity extends AppCompatActivity implements View.OnClic
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(ConnectionActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
                         }
 
                         // [START_EXCLUDE]
@@ -89,55 +85,9 @@ public class ConnectionActivity extends AppCompatActivity implements View.OnClic
         // [END sign_in_with_email]
     }
 
-    private void signOut() {
+    /*private void signOut() {
         mAuth.signOut();
         updateUI(null);
-    }
-/*private void sendEmailVerification() {
-        // Send verification email
-        // [START send_email_verification]
-        final FirebaseUser user = mAuth.getCurrentUser();
-        user.sendEmailVerification()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // [START_EXCLUDE]
-                        // Re-enable button
-                        mBinding.verifyEmailButton.setEnabled(true);
-
-                        if (task.isSuccessful()) {
-                            Toast.makeText(EmailPasswordActivity.this,
-                                    "Verification email sent to " + user.getEmail(),
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Log.e(TAG, "sendEmailVerification", task.getException());
-                            Toast.makeText(EmailPasswordActivity.this,
-                                    "Failed to send verification email.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        // [END_EXCLUDE]
-                    }
-                });
-        // [END send_email_verification]
-    }
-
-    private void reload() {
-        mAuth.getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    updateUI(mAuth.getCurrentUser());
-                    Toast.makeText(ConnectionActivity.this,
-                            "Reload successful!",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Log.e(TAG, "reload", task.getException());
-                    Toast.makeText(ConnectionActivity.this,
-                            "Failed to reload user.",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }*/
 
     private boolean validateForm() {
@@ -160,31 +110,6 @@ public class ConnectionActivity extends AppCompatActivity implements View.OnClic
         }
 
         return valid;
-    }
-
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            mBinding.status.setText(getString(R.string.emailpassword_status_fmt,
-                    user.getEmail(), user.isEmailVerified()));
-            mBinding.detail.setText(getString(R.string.firebase_status_fmt, user.getUid()));
-
-            //mBinding.emailPasswordButtons.setVisibility(View.GONE);
-            //mBinding.emailPasswordFields.setVisibility(View.GONE);
-            //mBinding.signedInButtons.setVisibility(View.VISIBLE);
-
-            /*if (user.isEmailVerified()) {
-                mBinding.verifyEmailButton.setVisibility(View.GONE);
-            } else {
-                mBinding.verifyEmailButton.setVisibility(View.VISIBLE);
-            }
-        } else {
-            mBinding.status.setText(R.string.signed_out);
-            mBinding.detail.setText(null);
-
-            //mBinding.emailPasswordButtons.setVisibility(View.VISIBLE);
-            mBinding.emailPasswordFields.setVisibility(View.VISIBLE);
-            mBinding.signedInButtons.setVisibility(View.GONE);*/
-        }
     }
 
     @Override
