@@ -15,17 +15,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthMultiFactorException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.MultiFactorResolver;
-import com.uqac.sellet.databinding.ActivityEmailpasswordBinding;
+import com.uqac.sellet.databinding.ActivityConnectionBinding;
 
-public class EmailPasswordActivity extends AppCompatActivity implements
-        View.OnClickListener {
+public class ConnectionActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "EmailPassword";
+    private static final String TAG = "Connection";
 
-    private ActivityEmailpasswordBinding mBinding;
+    private ActivityConnectionBinding mBinding;
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
@@ -34,15 +31,13 @@ public class EmailPasswordActivity extends AppCompatActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = ActivityEmailpasswordBinding.inflate(getLayoutInflater());
+        mBinding = ActivityConnectionBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
         // Buttons
-        mBinding.emailSignInButton.setOnClickListener(this);
-        mBinding.emailCreateAccountButton.setOnClickListener(this);
-        mBinding.signOutButton.setOnClickListener(this);
-        mBinding.verifyEmailButton.setOnClickListener(this);
-        mBinding.reloadButton.setOnClickListener(this);
+        mBinding.connectionButton.setOnClickListener(this);
+        mBinding.createAccText.setOnClickListener(this);
+
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -60,42 +55,11 @@ public class EmailPasswordActivity extends AppCompatActivity implements
     }
     // [END on_start_check_user]
 
-    private void createAccount(String email, String password) {
-        Log.d(TAG, "createAccount:" + email);
-        if (!validateForm()) {
-            return;
-        }
-
-
-        // [START create_user_with_email]
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
-
-                    }
-                });
-        // [END create_user_with_email]
-    }
-
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
         if (!validateForm()) {
             return;
         }
-
 
         // [START sign_in_with_email]
         mAuth.signInWithEmailAndPassword(email, password)
@@ -110,7 +74,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
+                            Toast.makeText(ConnectionActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -129,11 +93,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements
         mAuth.signOut();
         updateUI(null);
     }
-
-    private void sendEmailVerification() {
-        // Disable button
-        mBinding.verifyEmailButton.setEnabled(false);
-
+/*private void sendEmailVerification() {
         // Send verification email
         // [START send_email_verification]
         final FirebaseUser user = mAuth.getCurrentUser();
@@ -167,18 +127,18 @@ public class EmailPasswordActivity extends AppCompatActivity implements
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     updateUI(mAuth.getCurrentUser());
-                    Toast.makeText(EmailPasswordActivity.this,
+                    Toast.makeText(ConnectionActivity.this,
                             "Reload successful!",
                             Toast.LENGTH_SHORT).show();
                 } else {
                     Log.e(TAG, "reload", task.getException());
-                    Toast.makeText(EmailPasswordActivity.this,
+                    Toast.makeText(ConnectionActivity.this,
                             "Failed to reload user.",
                             Toast.LENGTH_SHORT).show();
                 }
             }
         });
-    }
+    }*/
 
     private boolean validateForm() {
         boolean valid = true;
@@ -208,11 +168,11 @@ public class EmailPasswordActivity extends AppCompatActivity implements
                     user.getEmail(), user.isEmailVerified()));
             mBinding.detail.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
-            mBinding.emailPasswordButtons.setVisibility(View.GONE);
-            mBinding.emailPasswordFields.setVisibility(View.GONE);
-            mBinding.signedInButtons.setVisibility(View.VISIBLE);
+            //mBinding.emailPasswordButtons.setVisibility(View.GONE);
+            //mBinding.emailPasswordFields.setVisibility(View.GONE);
+            //mBinding.signedInButtons.setVisibility(View.VISIBLE);
 
-            if (user.isEmailVerified()) {
+            /*if (user.isEmailVerified()) {
                 mBinding.verifyEmailButton.setVisibility(View.GONE);
             } else {
                 mBinding.verifyEmailButton.setVisibility(View.VISIBLE);
@@ -221,25 +181,19 @@ public class EmailPasswordActivity extends AppCompatActivity implements
             mBinding.status.setText(R.string.signed_out);
             mBinding.detail.setText(null);
 
-            mBinding.emailPasswordButtons.setVisibility(View.VISIBLE);
+            //mBinding.emailPasswordButtons.setVisibility(View.VISIBLE);
             mBinding.emailPasswordFields.setVisibility(View.VISIBLE);
-            mBinding.signedInButtons.setVisibility(View.GONE);
+            mBinding.signedInButtons.setVisibility(View.GONE);*/
         }
     }
 
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.emailCreateAccountButton) {
-            createAccount(mBinding.fieldEmail.getText().toString(), mBinding.fieldPassword.getText().toString());
-        } else if (i == R.id.emailSignInButton) {
+        if (i == R.id.connectionButton) {
             signIn(mBinding.fieldEmail.getText().toString(), mBinding.fieldPassword.getText().toString());
-        } else if (i == R.id.signOutButton) {
-            signOut();
-        } else if (i == R.id.verifyEmailButton) {
-            sendEmailVerification();
-        } else if (i == R.id.reloadButton) {
-            reload();
+        } else if (i == R.id.createAccText) {
+            startActivity(new Intent(ConnectionActivity.this, RegisterActivity.class));
         }
     }
 }

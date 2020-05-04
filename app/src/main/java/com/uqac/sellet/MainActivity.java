@@ -3,9 +3,7 @@ package com.uqac.sellet;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,10 +12,6 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import org.w3c.dom.Text;
-
-import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -42,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 //        updateUI(currentUser);
         if(currentUser == null){
-            Intent intent = new Intent(this, EmailPasswordActivity.class);
+            Intent intent = new Intent(this, ConnectionActivity.class);
             startActivity(intent);
         }
 
