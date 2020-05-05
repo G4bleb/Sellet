@@ -13,12 +13,16 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private FirebaseAuth mAuth;
     private static final int PICK_PROFILE_PICTURE = 1;
     private static final int PICK_PRODUCT_PICTURE = 2;
+
+    private TextView testTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         setContentView(R.layout.activity_main);
+        testTextView = findViewById(R.id.testtextview);
     }
 
     @Override
@@ -49,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             public void onReady(Product product) {
                 Log.d(TAG, product.toString());
                 Toast.makeText(MainActivity.this, product.name, Toast.LENGTH_SHORT).show();
-                ((TextView) findViewById(R.id.testtextview)).setText(product.toString());
+                testTextView.setText(product.toString());
                 if(!product.picturesLinks.isEmpty()){
                     PictureLoader pl = new PictureLoader();
                     pl.getPicture(MainActivity.this, (ImageView)findViewById(R.id.profilepic_imageView), product.picturesLinks.get(0));
@@ -97,5 +102,33 @@ public class MainActivity extends AppCompatActivity {
         ImageView imageView = findViewById(R.id.profilepic_imageView);
         PictureLoader pl = new PictureLoader();
         pl.getProfilePicture(this, imageView, mAuth.getCurrentUser().getUid());
+    }
+
+    public void getChat(View view){
+        Chat c = new Chat("ngaTs7i0u0gvD4FvJmNci7gKspK2").setOnReadyListener(new OnReadyListener<Chat>() {
+            @Override
+            public void onReady(Chat c) {
+                Log.d(TAG, c.messages.toString());
+                testTextView.setText(c.messages.toString());
+            }
+        });
+    }
+
+    public void getAllMyContacts(View view){
+        new Chat().allMyContacts().setOnReadyListener(new OnReadyListener<ArrayList<String>>() {
+            @Override
+            public void onReady(ArrayList<String> contacts) {
+                testTextView.setText(contacts.toString());
+            }
+        });
+    }
+
+    public void addMessage(View view){
+        Chat c = new Chat("ngaTs7i0u0gvD4FvJmNci7gKspK2").setOnReadyListener(new OnReadyListener<Chat>() {
+            @Override
+            public void onReady(Chat c) {
+                c.setOnReadyListener(null).addMessage("Coucou !");
+            }
+        });
     }
 }

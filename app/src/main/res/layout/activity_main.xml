@@ -48,6 +48,27 @@
         android:onClick="getProfilePic"
         android:text="get profile pic" />
 
+    <Button
+        android:id="@+id/getchat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="getChat"
+        android:text="getchat" />
+
+    <Button
+        android:id="@+id/getAllMyContacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="getAllMyContacts"
+        android:text="getAllMyContacts" />
+
+    <Button
+        android:id="@+id/addMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="addMessage"
+        android:text="addMessage" />
+
     <ImageView
         android:id="@+id/profilepic_imageView"
         android:layout_width="match_parent"
