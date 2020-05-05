@@ -39,4 +39,8 @@
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="sellet">sellet</string>
+    <string name="profil">Profil</string>
+    <string name="profile">Profil</string>
+    <string name="edit">Modifier mon profil</string>
+    <string name="chevron">chevron</string>
 </resources>
