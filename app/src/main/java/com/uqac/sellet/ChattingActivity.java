@@ -13,6 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.uqac.sellet.entities.Chat;
+import com.uqac.sellet.entities.Message;
+import com.uqac.sellet.entities.User;
 
 import java.text.DateFormat;
 

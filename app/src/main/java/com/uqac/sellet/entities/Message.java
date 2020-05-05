@@ -1,4 +1,4 @@
-package com.uqac.sellet;
+package com.uqac.sellet.entities;
 
 import com.google.firebase.Timestamp;
 
@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Message {
-    String author;
-    Timestamp timestamp;
-    String content;
+    public String author;
+    public Timestamp timestamp;
+    public String content;
 
     Message(String author, Timestamp timestamp, String content){
         this.author = author;
@@ -16,7 +16,7 @@ public class Message {
         this.content = content;
     }
 
-    Map<String, Object> toMap(){
+    public Map<String, Object> toMap(){
         Map<String, Object> h = new HashMap<>();
         h.put("author", author);
         h.put("timestamp", timestamp);

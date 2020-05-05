@@ -41,7 +41,7 @@ public class PictureLoader {
         getPicture(context, imageView, "profilepictures/"+id+".png");
     }
 
-    void setPicture(final Context context, Uri imageUri, String storageFolder, String name){
+    public void setPicture(final Context context, Uri imageUri, String storageFolder, String name){
         Bitmap bitmap;
         try {
             bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);

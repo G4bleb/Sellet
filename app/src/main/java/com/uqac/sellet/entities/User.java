@@ -1,4 +1,4 @@
-package com.uqac.sellet;
+package com.uqac.sellet.entities;
 
 import android.content.Context;
 import android.util.Log;
@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.uqac.sellet.OnReadyListener;
 
 import java.util.List;
 
@@ -24,11 +25,11 @@ public class User {
 
     private Context context;
 
-    String uid = null;
-    double grade = 0d;
-    double graders = 0d;
-    String name = "";
-    List<String> products;
+    public String uid = null;
+    public double grade = 0d;
+    public double graders = 0d;
+    public String name = "";
+    public List<String> products;
 
     private OnReadyListener readyListener;
 
@@ -36,13 +37,13 @@ public class User {
 //        this.context = context;
 //    }
 
-    User(Context context, String uid){
+    public User(Context context, String uid){
         this.context = context;
         this.uid = uid;
         get();
     }
 
-    User get(){
+    public User get(){
         DocumentReference docRef = db.collection("users").document(uid);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -69,7 +70,7 @@ public class User {
         return this;
     }
 
-    void setUsername(String newusername){
+    public void setUsername(String newusername){
         DocumentReference ref = db.collection("users").document(mAuth.getCurrentUser().getUid());
 
         ref.update("name", newusername)
@@ -88,7 +89,7 @@ public class User {
                 });
     }
 
-    User setOnReadyListener(OnReadyListener rl){
+    public User setOnReadyListener(OnReadyListener rl){
         readyListener = rl;
         return this;
     }

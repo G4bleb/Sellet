@@ -1,7 +1,6 @@
-package com.uqac.sellet;
+package com.uqac.sellet.entities;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -16,8 +15,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.uqac.sellet.OnReadyListener;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,14 +36,13 @@ public class Chat {
     private OnReadyListener readyListener;
 
     List<String> chatters;
-    ArrayList<Message> messages = new ArrayList<>();
+    public ArrayList<Message> messages = new ArrayList<>();
     CollectionReference messagesCollection;
 
-    Chat(){
-
+    public Chat(){
     }
 
-    Chat(final String uidToChatTo){
+    public Chat(final String uidToChatTo){
         chatsRef.document(idFromUidToChatTo(uidToChatTo))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -68,7 +66,7 @@ public class Chat {
                 });
     }
 
-    void createChat(String uidToChatTo){
+    public void createChat(String uidToChatTo){
         Map<String, Object> chat = new HashMap<>();
         chat.put("chatters", Arrays.asList(mAuth.getCurrentUser().getUid(), uidToChatTo));
 
@@ -86,7 +84,7 @@ public class Chat {
             });
     }
 
-    void getMessagesFromMessagesReference() {
+    public void getMessagesFromMessagesReference() {
         messagesCollection.orderBy("timestamp", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -115,12 +113,12 @@ public class Chat {
                 });
     }
 
-    Chat setOnReadyListener(OnReadyListener rl){
+    public Chat setOnReadyListener(OnReadyListener rl){
         readyListener = rl;
         return this;
     }
 
-    String idFromUidToChatTo(String uidToChatTo){
+    public String idFromUidToChatTo(String uidToChatTo){
         ArrayList<String> chattersList = new ArrayList<>();
         chattersList.add(mAuth.getCurrentUser().getUid());
         chattersList.add(uidToChatTo);
@@ -134,7 +132,7 @@ public class Chat {
         return sb.toString();
     }
 
-    Chat allMyContacts() {
+    public Chat allMyContacts() {
         final ArrayList<String> mycontacts = new ArrayList<>();
         chatsRef.whereArrayContains("chatters", mAuth.getCurrentUser().getUid())
                 .get()
@@ -162,7 +160,7 @@ public class Chat {
         return this;
     }
 
-    Chat addMessage(String content) {
+    public Chat addMessage(String content) {
         final Message msg = new Message(mAuth.getCurrentUser().getUid(), Timestamp.now(), content);
         messagesCollection.add(msg.toMap())
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

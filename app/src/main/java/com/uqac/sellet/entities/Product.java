@@ -1,4 +1,4 @@
-package com.uqac.sellet;
+package com.uqac.sellet.entities;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,6 +13,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.uqac.sellet.OnReadyListener;
+import com.uqac.sellet.PictureLoader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,11 +30,11 @@ public class Product {
 
     private Context context;
 
-    String id = null;
-    String name = "";
-    String desc = "";
-    String owner = null;
-    double price = 0d;
+    public String id = null;
+    public String name = "";
+    public String desc = "";
+    public String owner = null;
+    public double price = 0d;
     List<String> picturesLinks = new ArrayList<String>();
 
     ArrayList<Uri> picturesArray = new ArrayList<Uri>();
@@ -47,7 +49,7 @@ public class Product {
         this.price = price;
     }
 
-    Product(Context context, String id){
+    public Product(Context context, String id){
         this.context = context;
         this.id = id;
     }
@@ -82,7 +84,7 @@ public class Product {
                 });
     }
 
-    Product get(){
+    public Product get(){
         DocumentReference docRef = db.collection("products").document(id);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -111,12 +113,12 @@ public class Product {
         return this;
     }
 
-    Product setOnReadyListener(OnReadyListener rl){
+    public Product setOnReadyListener(OnReadyListener rl){
         readyListener = rl;
         return this;
     }
 
-    Map<String, Object> toMap(){
+    public Map<String, Object> toMap(){
         Map<String, Object> product = new HashMap<>();
         product.put("name", name);
         product.put("desc", desc);
