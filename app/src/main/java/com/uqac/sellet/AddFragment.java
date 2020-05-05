@@ -20,16 +20,6 @@ public class AddFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_fragment, container, false);
-
-        btnTest = (Button) view.findViewById(R.id.btnAdd);
-
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Testing Add Btn", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         return view;
     }
 }

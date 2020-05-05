@@ -18,6 +18,7 @@
     <string name="token_null">Token: null</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Mot de Passe</string>
+    <string name="hint_search">Rechercher un article...</string>
     <string name="connect_text">Se Connecter</string>
     <string name="register_text">S\'inscrire</string>
     <string name="no_acc_text">Pas encore inscrit ?</string>
@@ -37,4 +38,5 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="sellet">sellet</string>
 </resources>
