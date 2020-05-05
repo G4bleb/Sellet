@@ -19,6 +19,7 @@
     <string name="hint_email">Email</string>
     <string name="hint_password">Mot de Passe</string>
     <string name="hint_search">Rechercher un article...</string>
+    <string name="hint_title">ex: Masque FFP1 Supreme</string>
     <string name="connect_text">Se Connecter</string>
     <string name="register_text">S\'inscrire</string>
     <string name="no_acc_text">Pas encore inscrit ?</string>
@@ -44,4 +45,11 @@
     <string name="edit">Modifier mon profil</string>
     <string name="chevron">chevron</string>
     <string name="vendre">Vendre un article</string>
+    <string name="add_images">+ Ajouter des photos</string>
+    <string name="titre">Titre</string>
+    <string name="description">Description</string>
+    <string name="price">Prix</string>
+    <string name="hint_desc">ex: Porté quelques fois</string>
+    <string name="hint_price">0.00€</string>
+    <string name="add_product">Ajouter</string>
 </resources>

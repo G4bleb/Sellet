@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="item_states">
+        <item>Neuf</item>
+        <item>Bon</item>
+        <item>Moyen</item>
+        <item>Mauvais</item>
+    </string-array>
+</resources>
