@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.uqac.sellet.entities.Chat;
+import com.uqac.sellet.entities.OnReadyListener;
 import com.uqac.sellet.entities.User;
 
 import java.util.ArrayList;

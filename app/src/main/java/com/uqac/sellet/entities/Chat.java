@@ -15,7 +15,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.uqac.sellet.OnReadyListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
