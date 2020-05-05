@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new HomeFragment(), "Home");
         adapter.addFragment(new SearchFragment(), "Search");
         adapter.addFragment(new AddFragment(), "Add");
-        //adapter.addFragment(new MessagesFragment(), "Messages");
+        adapter.addFragment(new ChatsFragment(), "Chats");
         adapter.addFragment(new ProfileFragment(), "Profile");
 
         viewPager.setAdapter(adapter);

@@ -1,27 +1,23 @@
 package com.uqac.sellet;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.DateFormat;
 
-public class MessagesFragment extends Fragment {
-    private static final String TAG = "MessagesFragment";
-
+public class ChattingActivity extends AppCompatActivity {
+    private static final String TAG = "ChattingActivity";
     private static final int READY_TOTAL = 3;
     private FirebaseAuth mAuth;
 
@@ -35,19 +31,20 @@ public class MessagesFragment extends Fragment {
 
     private int readyCount;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.messages_fragment, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
 
-        listOfMessages = view.findViewById(R.id.messagesList);
-        messageInput = view.findViewById(R.id.messageInput);
+
+        setContentView(R.layout.activity_chatting);
+        listOfMessages = findViewById(R.id.messagesList);
+        messageInput = findViewById(R.id.messageInput);
 
         readyCount = 0;
 
-        me = new User(getContext(), mAuth.getCurrentUser().getUid()).setOnReadyListener(new OnReadyListener<User>() {
+        me = new User(ChattingActivity.this, mAuth.getCurrentUser().getUid()).setOnReadyListener(new OnReadyListener<User>() {
             @Override
             public void onReady(User u) {
 //                ChattingActivity.this.me = u;
@@ -55,7 +52,7 @@ public class MessagesFragment extends Fragment {
             }
         });
 
-        him = new User(getContext(), getActivity().getIntent().getStringExtra("himId")).setOnReadyListener(new OnReadyListener<User>() {
+        him = new User(ChattingActivity.this, getIntent().getStringExtra("himId")).setOnReadyListener(new OnReadyListener<User>() {
             @Override
             public void onReady(User u) {
 //                ChattingActivity.this.him = u;
@@ -63,15 +60,13 @@ public class MessagesFragment extends Fragment {
             }
         });
 
-        chat = new Chat(getActivity().getIntent().getStringExtra("himId")).setOnReadyListener(new OnReadyListener<Chat>() {
+        chat = new Chat(getIntent().getStringExtra("himId")).setOnReadyListener(new OnReadyListener<Chat>() {
             @Override
             public void onReady(Chat c) {
                 Log.d(TAG, c.messages.toString());
                 addReady();
             }
         });
-
-        return view;
     }
 
     private void addReady(){
@@ -81,7 +76,7 @@ public class MessagesFragment extends Fragment {
             for (Message msg : chat.messages){
                 addMessageToMessageList(msg);
             }
-            getView().findViewById(R.id.sendButton).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.sendButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     sendMessage(v);
@@ -91,11 +86,11 @@ public class MessagesFragment extends Fragment {
     }
 
     private void addMessageToMessageList(Message msg){
-        LinearLayout messageView = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.message_bubble, listOfMessages, false);
+        LinearLayout messageView = (LinearLayout) LayoutInflater.from(ChattingActivity.this).inflate(R.layout.message_bubble, listOfMessages, false);
 
         ((TextView)(messageView.findViewById(R.id.author))).setText(authorName(msg));
         ((TextView)(messageView.findViewById(R.id.timestamp))).setText(DateFormat.getDateTimeInstance().format(msg.timestamp.toDate()));
-        TextView vcontent = (TextView) (messageView.findViewById(R.id.content));
+        TextView vcontent = (TextView)(messageView.findViewById(R.id.content));
         vcontent.setText(msg.content);
 
         if(isMessageByMe(msg)){
@@ -128,6 +123,6 @@ public class MessagesFragment extends Fragment {
                 });
         messageInput.setText("");
         messageInput.clearFocus();
-        Toast.makeText(getActivity(), "Sending...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Sending...", Toast.LENGTH_SHORT).show();
     }
 }

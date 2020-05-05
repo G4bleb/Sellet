@@ -148,10 +148,10 @@ public class Chat {
                                 for(String chatter : chatters){
                                     if(!chatter.equals(mAuth.getCurrentUser().getUid())){
                                         mycontacts.add(chatter);
-                                        if (readyListener != null) {
-                                            readyListener.onReady(mycontacts);
-                                        }
                                     }
+                                }
+                                if (readyListener != null) {
+                                    readyListener.onReady(mycontacts);
                                 }
                             }
                         } else {
