@@ -105,13 +105,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getChat(View view){
-        Chat c = new Chat("ngaTs7i0u0gvD4FvJmNci7gKspK2").setOnReadyListener(new OnReadyListener<Chat>() {
-            @Override
-            public void onReady(Chat c) {
-                Log.d(TAG, c.messages.toString());
-                testTextView.setText(c.messages.toString());
-            }
-        });
+        Intent myIntent = new Intent(MainActivity.this, ChattingActivity.class);
+        myIntent.putExtra("himId", "ngaTs7i0u0gvD4FvJmNci7gKspK2"); //Optional parameters
+        MainActivity.this.startActivity(myIntent);
+
     }
 
     public void getAllMyContacts(View view){

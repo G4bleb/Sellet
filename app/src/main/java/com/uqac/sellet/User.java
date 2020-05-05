@@ -32,13 +32,14 @@ public class User {
 
     private OnReadyListener readyListener;
 
-    User(Context context){
-        this.context = context;
-    }
+//    User(Context context){
+//        this.context = context;
+//    }
 
     User(Context context, String uid){
         this.context = context;
         this.uid = uid;
+        get();
     }
 
     User get(){

@@ -17,6 +17,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -100,14 +101,13 @@ public class Chat {
                                             document.getTimestamp("timestamp"),
                                             document.getString("content")
                                     ));
-                                    if (readyListener != null) {
-                                        readyListener.onReady(Chat.this);
-                                    }
                                 } else {
                                     Log.d(TAG, "Document does not exist");
                                 }
                             }
-
+                            if (readyListener != null) {
+                                readyListener.onReady(Chat.this);
+                            }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -162,15 +162,15 @@ public class Chat {
         return this;
     }
 
-    void addMessage(String content) {
-        Message msg = new Message(mAuth.getCurrentUser().getUid(), Timestamp.now(), content);
+    Chat addMessage(String content) {
+        final Message msg = new Message(mAuth.getCurrentUser().getUid(), Timestamp.now(), content);
         messagesCollection.add(msg.toMap())
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
                         if (readyListener != null) {
-                            readyListener.onReady(null);
+                            readyListener.onReady(msg);
                         }
                     }
                 })
@@ -180,6 +180,7 @@ public class Chat {
                         Log.w(TAG, "Error adding document", e);
                     }
                 });
+        return this;
     }
 
 }
