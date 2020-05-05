@@ -1,4 +1,4 @@
-package com.uqac.sellet;
+package com.uqac.sellet.utilities;
 
 import android.content.Context;
 
