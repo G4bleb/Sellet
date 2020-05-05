@@ -1,4 +1,4 @@
-package com.uqac.sellet;
+package com.uqac.sellet.entities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.uqac.sellet.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -33,11 +34,11 @@ public class PictureLoader {
     private static final FirebaseStorage storage = FirebaseStorage.getInstance();
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    void setProfilePicture(final Context context, Uri imageUri){
+    public void setProfilePicture(final Context context, Uri imageUri){
         setPicture(context, imageUri, "profilepictures", mAuth.getCurrentUser().getUid());
     }
 
-    void getProfilePicture(final Context context, ImageView imageView, String id){
+    public void getProfilePicture(final Context context, ImageView imageView, String id){
         getPicture(context, imageView, "profilepictures/"+id+".png");
     }
 
@@ -75,7 +76,7 @@ public class PictureLoader {
                 });
     }
 
-    void getPicture(final Context context, ImageView imageView, String url){
+    public void getPicture(final Context context, ImageView imageView, String url){
         // Load the image using Glide
         Glide.with(context)
                 .load(storage.getReference().child(url))
