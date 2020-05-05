@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         ViewPager mViewPager = findViewById(R.id.view_pager);
-        mViewPager.setOffscreenPageLimit(5);
+        mViewPager.setOffscreenPageLimit(4);
 
         setupViewPager(mViewPager);
 

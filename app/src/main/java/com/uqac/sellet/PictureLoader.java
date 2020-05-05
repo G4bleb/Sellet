@@ -79,6 +79,8 @@ public class PictureLoader {
         // Load the image using Glide
         Glide.with(context)
                 .load(storage.getReference().child(url))
+                .placeholder(R.drawable.logo)
+                .error(R.drawable.logo)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .into(imageView);

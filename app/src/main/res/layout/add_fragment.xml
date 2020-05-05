@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:background="@color/colorPrimaryDark">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="94dp"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:contentDescription="@string/sellet"
-        app:srcCompat="@drawable/logoandtxt" />
+        android:fontFamily="@font/comfortaa_bold"
+        android:text="@string/vendre"
+        android:textColor="#EEEEEE"
+        android:textSize="24sp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"/>
 
 
-</RelativeLayout>
+
+
+</LinearLayout>
