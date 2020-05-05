@@ -1,6 +1,7 @@
 package com.uqac.sellet;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.uqac.sellet.ui.main.SectionsPagerAdapter;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -19,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private static final int PICK_PROFILE_PICTURE = 1;
     private static final int PICK_PRODUCT_PICTURE = 2;
+
+    private SectionsPageAdapter mSectionsPageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void getProduct(View view){
+    /*public void getProduct(View view){
         Product p = new Product(this, "7Rl8jITR5oH910MokNgG");
         p.get().setOnReadyListener(new OnReadyListener<Product>() {
             @Override
@@ -97,5 +101,9 @@ public class MainActivity extends AppCompatActivity {
         ImageView imageView = findViewById(R.id.profilepic_imageView);
         PictureLoader pl = new PictureLoader();
         pl.getProfilePicture(this, imageView, mAuth.getCurrentUser().getUid());
+    }*/
+
+    private void setupViewPager(ViewPager viewPager) {
+
     }
 }
