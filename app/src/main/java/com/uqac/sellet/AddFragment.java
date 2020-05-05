@@ -1,5 +1,6 @@
 package com.uqac.sellet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -23,37 +25,57 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
+import com.uqac.sellet.entities.PictureLoader;
+import com.uqac.sellet.entities.Product;
 
 import java.util.ArrayList;
 
+import static android.app.Activity.RESULT_OK;
+
 public class AddFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "AddFragment";
+    private static final int PICK_PRODUCT_PICTURE = 1;
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private ArrayList<Category> categories = new ArrayList<Category>();
 
-    private int[] imageList = new int[] {
-            R.drawable.logo, R.drawable.logo
-    };
+//    private int[] imageList = new int[] {
+//            R.drawable.logo, R.drawable.logo
+//    };
+
+    private PictureLoader pl = new PictureLoader();
+    private CarouselView carouselView;
+
     Spinner statesSpinner,  categoriesSpinner;
     ArrayAdapter adapter1, adapter2;
 
     ArrayList<String> names = new ArrayList<String>();
+
+    Product p;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_fragment, container, false);
 
+        p = new Product(getContext());
+
         retrieveCategories();
 
-        CarouselView carouselView = view.findViewById(R.id.carousel);
-        carouselView.setPageCount(2);
+        carouselView = view.findViewById(R.id.carousel);
+        carouselView.setPageCount(0);
         carouselView.setImageListener(new ImageListener() {
             @Override
             public void setImageForPosition(int position, ImageView imageView) {
-                imageView.setImageResource(imageList[position]);
+                imageView.setImageURI(p.picturesArray.get(position));
+            }
+        });
+
+        view.findViewById(R.id.addImages).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPicture(v);
             }
         });
 
@@ -69,6 +91,13 @@ public class AddFragment extends Fragment implements AdapterView.OnItemSelectedL
         adapter2.setDropDownViewResource(R.layout.spinner_dropdown_layout);
         statesSpinner.setAdapter(adapter2);
         statesSpinner.setOnItemSelectedListener(this);
+
+        view.findViewById(R.id.addButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                publishProduct(v);
+            }
+        });
 
         return view;
     }
@@ -109,5 +138,34 @@ public class AddFragment extends Fragment implements AdapterView.OnItemSelectedL
                         }
                     }
                 });
+    }
+
+    public void addPicture(View v){
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        startActivityForResult(intent, PICK_PRODUCT_PICTURE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK && requestCode == PICK_PRODUCT_PICTURE) {
+            Log.d(TAG, data.getData().toString());
+            p.picturesArray.add(data.getData());
+            refreshCarouselView();
+        }
+    }
+
+    private void refreshCarouselView(){
+        carouselView.setPageCount(p.picturesArray.size());
+    }
+
+    private void publishProduct(View v){
+        p.name = ((EditText)getView().findViewById(R.id.title_edit)).getText().toString();
+        p.desc = ((EditText)getView().findViewById(R.id.desc_edit)).getText().toString();
+        p.price = Double.parseDouble(((EditText)getView().findViewById(R.id.price_edit)).getText().toString());
+        p.publish();
+
     }
 }

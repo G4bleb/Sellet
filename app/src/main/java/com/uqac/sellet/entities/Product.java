@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -33,9 +34,9 @@ public class Product {
     public String desc = "";
     public String owner = null;
     public double price = 0d;
-    List<String> picturesLinks = new ArrayList<String>();
+    public List<String> picturesLinks = new ArrayList<String>();
 
-    ArrayList<Uri> picturesArray = new ArrayList<Uri>();
+    public ArrayList<Uri> picturesArray = new ArrayList<Uri>();
 
     private OnReadyListener readyListener;
 
@@ -52,11 +53,12 @@ public class Product {
         this.id = id;
     }
 
-//    Product(Context context){
-//        this.context = context;
-//    }
+    public Product(Context context){
+        this.context = context;
+    }
 
     public void publish(){
+        owner = mAuth.getCurrentUser().getUid();
         db.collection("products")
                 .add(this.toMap())
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -72,6 +74,7 @@ public class Product {
                                 pl.setPicture(context, picture, "products/"+documentReference.getId(), Integer.toString(i++));
                             }
                         }
+                        db.collection("users").document(mAuth.getCurrentUser().getUid()).update("products", FieldValue.arrayUnion(documentReference.getId()));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -80,6 +83,7 @@ public class Product {
                         Log.w(TAG, "Error adding document", e);
                     }
                 });
+
     }
 
     public Product get(){
