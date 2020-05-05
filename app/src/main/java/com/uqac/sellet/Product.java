@@ -57,15 +57,8 @@ public class Product {
 //    }
 
     public void publish(){
-        Map<String, Object> product = new HashMap<>();
-        product.put("name", name);
-        product.put("desc", desc);
-        product.put("owner", owner);
-        product.put("price", price);
-        product.put("pictures", picturesLinks);
-
         db.collection("products")
-                .add(product)
+                .add(this.toMap())
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
@@ -121,6 +114,16 @@ public class Product {
     Product setOnReadyListener(OnReadyListener rl){
         readyListener = rl;
         return this;
+    }
+
+    Map<String, Object> toMap(){
+        Map<String, Object> product = new HashMap<>();
+        product.put("name", name);
+        product.put("desc", desc);
+        product.put("owner", owner);
+        product.put("price", price);
+        product.put("pictures", picturesLinks);
+        return product;
     }
 
     @NonNull
