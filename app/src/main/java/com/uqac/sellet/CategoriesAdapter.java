@@ -34,10 +34,10 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CategoriesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.category_row, parent, false);
-        return new ViewHolder(view, onCategoryListener);
+        return new CategoriesAdapter.ViewHolder(view, onCategoryListener);
     }
 
     @Override

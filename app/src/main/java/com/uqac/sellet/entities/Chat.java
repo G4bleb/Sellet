@@ -66,13 +66,19 @@ public class Chat {
     }
 
     public void createChat(String uidToChatTo){
-        Map<String, Object> chat = new HashMap<>();
-        chat.put("chatters", Arrays.asList(mAuth.getCurrentUser().getUid(), uidToChatTo));
+        chatters = Arrays.asList(mAuth.getCurrentUser().getUid(), uidToChatTo);
 
-        chatsRef.document(idFromUidToChatTo(uidToChatTo)).set(chat).addOnSuccessListener(new OnSuccessListener<Void>() {
+        DocumentReference docRef = chatsRef.document(idFromUidToChatTo(uidToChatTo));
+        messagesCollection = docRef.collection("messages");
+
+        Map<String, Object> chat = new HashMap<>();
+        chat.put("chatters", chatters);
+
+        docRef.set(chat).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
                     Log.d(TAG, "DocumentSnapshot successfully written!");
+                    getMessagesFromMessagesReference();
                 }
             })
             .addOnFailureListener(new OnFailureListener() {

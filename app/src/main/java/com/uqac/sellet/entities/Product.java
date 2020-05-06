@@ -10,10 +10,14 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.uqac.sellet.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,9 +69,9 @@ public class Product {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                        Toast.makeText(context, "Product published", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.product_published, Toast.LENGTH_SHORT).show();
                         if(!picturesArray.isEmpty()){
-                            Toast.makeText(context, "Uploading pictures...", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.uploading_pictures, Toast.LENGTH_SHORT).show();
                             PictureLoader pl = new PictureLoader();
                             int i = 1;
                             for (Uri picture: picturesArray) {
@@ -112,6 +116,40 @@ public class Product {
                 }
             }
         });
+        return this;
+    }
+
+    public Product getAllProducts(){
+        ArrayList<Product> products = new ArrayList<>();
+
+        CollectionReference colRef = db.collection("products");
+
+        colRef.get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d(TAG, document.getId() + " => " + document.getData());
+
+                            Product p = new Product(Product.this.context);
+                            p.id = document.getId();
+                            p.name = document.getString("name");
+                            p.desc = document.getString("desc");
+                            p.owner = document.getString("owner");
+                            p.price = document.getDouble("price");
+                            p.picturesLinks = (List<String>) document.get("pictures");
+
+                            products.add(p);
+                        }
+                        if(readyListener != null){
+                            readyListener.onReady(products);
+                        }
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                }
+            });
         return this;
     }
 

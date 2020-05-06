@@ -11,7 +11,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.uqac.sellet.R;
 
 import java.util.List;
 
@@ -77,7 +79,7 @@ public class User {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot successfully updated!");
-                        Toast.makeText(context, "Name updated", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.name_updated, Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -86,6 +88,12 @@ public class User {
                         Log.w(TAG, "Error updating document", e);
                     }
                 });
+    }
+
+    static public void addToFavorites(String productId){
+        FirebaseFirestore.getInstance().collection("users")
+                .document(mAuth.getCurrentUser().getUid())
+                .update("favorites", FieldValue.arrayUnion(productId));
     }
 
     public User setOnReadyListener(OnReadyListener rl){

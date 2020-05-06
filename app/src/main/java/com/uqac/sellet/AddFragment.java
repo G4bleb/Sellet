@@ -166,6 +166,5 @@ public class AddFragment extends Fragment implements AdapterView.OnItemSelectedL
         p.desc = ((EditText)getView().findViewById(R.id.desc_edit)).getText().toString();
         p.price = Double.parseDouble(((EditText)getView().findViewById(R.id.price_edit)).getText().toString());
         p.publish();
-
     }
 }
