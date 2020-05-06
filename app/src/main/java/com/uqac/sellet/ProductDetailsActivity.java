@@ -119,6 +119,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
         }
     }
 
+    public void backArrow(View v) {
+        finish();
+    }
+
     public void swapFavIcon() {
         if (faved) {
             favButton.setBackground(getResources().getDrawable(R.drawable.faved_button));
