@@ -28,6 +28,7 @@
     <string name="connect_acc_text"><u>Connectez-vous</u></string>
 
     <string name="added_to_favorites"><u>Ajouté aux favoris</u></string>
+    <string name="removed_from_favorites"><u>Retiré des favoris</u></string>
     <string name="name_updated"><u>Nom modifié</u></string>
     <string name="product_published"><u>Article publié</u></string>
     <string name="uploading_pictures"><u>Ajout des images...</u></string>
@@ -56,6 +57,6 @@
     <string name="price">Prix</string>
     <string name="hint_desc">ex: Porté quelques fois</string>
     <string name="hint_price">0.00€</string>
-    <string name="add_product">Ajouter</string>
+    <string name="add_product">Mettre en vente</string>
     <string name="product_preview">Product Preview</string>
 </resources>

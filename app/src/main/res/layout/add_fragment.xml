@@ -118,7 +118,7 @@
             android:backgroundTint="@color/primary50Text"
             android:fontFamily="@font/comfortaa"
             android:hint="@string/hint_price"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:textColor="#80EEEEEE"
             android:textSize="11sp" />
 

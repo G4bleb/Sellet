@@ -15,6 +15,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.uqac.sellet.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,7 @@ public class User {
     public double graders = 0d;
     public String name = "";
     public List<String> products;
+    public ArrayList<String> favorites = new ArrayList<String>();
 
     private OnReadyListener readyListener;
 
@@ -57,6 +59,7 @@ public class User {
                         User.this.graders = document.getDouble("graders");
                         User.this.name = document.getString("name");
                         User.this.products = (List<String>) document.get("products");
+                        User.this.favorites = (ArrayList<String>) document.get("favorites");
                         if(readyListener != null){
                             readyListener.onReady(User.this);
                         }
@@ -94,6 +97,22 @@ public class User {
         FirebaseFirestore.getInstance().collection("users")
                 .document(mAuth.getCurrentUser().getUid())
                 .update("favorites", FieldValue.arrayUnion(productId));
+    }
+
+    static public void removeFromFavorites(String productId){
+        FirebaseFirestore.getInstance().collection("users")
+                .document(mAuth.getCurrentUser().getUid())
+                .update("favorites", FieldValue.arrayRemove(productId));
+    }
+
+    public boolean checkFaved(String productId) {
+        for(int i=0 ; i < favorites.size() ; i++) {
+            if (productId.equals(favorites.get(i))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public User setOnReadyListener(OnReadyListener rl){

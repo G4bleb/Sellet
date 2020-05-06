@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FieldValue;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
@@ -22,8 +24,12 @@ import com.uqac.sellet.entities.User;
 public class ProductDetailsActivity extends AppCompatActivity {
     private static final String TAG = "ProductDetailsActivity";
 
+    private FirebaseAuth mAuth;
+
     private Product product;
     private PictureLoader pl = new PictureLoader();
+
+    private User currentUser;
 
     private TextView name_textview;
     private CarouselView carouselView;
@@ -34,19 +40,24 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     private Button chatButton;
     private Button favButton;
+    private boolean faved = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
 
-        carouselView = findViewById(R.id.details_carousel);
-        carouselView.setImageListener(new ImageListener() {
-            @Override
-            public void setImageForPosition(int position, ImageView imageView) {
-                pl.getPicture(ProductDetailsActivity.this, imageView, product.picturesLinks.get(position));
+        mAuth = FirebaseAuth.getInstance();
+
+        currentUser = new User(ProductDetailsActivity.this, mAuth.getCurrentUser().getUid()).setOnReadyListener((OnReadyListener<User>) u -> {
+            if(currentUser.checkFaved(product.id)) {
+                faved = true;
+                swapFavIcon();
             }
         });
+
+        carouselView = findViewById(R.id.details_carousel);
+        carouselView.setImageListener((position, imageView) -> pl.getPicture(ProductDetailsActivity.this, imageView, product.picturesLinks.get(position)));
 
         name_textview = findViewById(R.id.product_name);
         desc_textview = findViewById(R.id.product_desc);
@@ -59,22 +70,18 @@ public class ProductDetailsActivity extends AppCompatActivity {
         favButton = findViewById(R.id.fav_button);
 
         product = new Product(this, getIntent().getStringExtra("productId"));
-        product.get().setOnReadyListener(new OnReadyListener<Product>() {
-            @Override
-            public void onReady(Product p) {
-                product = p;
-                name_textview.setText(product.name);
-                desc_textview.setText(product.desc);
-                price_textview.setText(Double.toString(product.price));
+        product.get().setOnReadyListener((OnReadyListener<Product>) p -> {
+            product = p;
+            name_textview.setText(product.name);
+            desc_textview.setText(product.desc);
+            price_textview.setText(Double.toString(product.price) + "$");
 
-                setSeller(product.owner);
+            setSeller(product.owner);
 
-                if(!product.picturesLinks.isEmpty()){
-                    refreshCarouselView();
-                }
+            if(!product.picturesLinks.isEmpty()){
+                refreshCarouselView();
             }
         });
-
     }
 
     private void refreshCarouselView(){
@@ -85,18 +92,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private void setSeller(String userid){
         Log.d(TAG, "setSeller: "+userid);
 
-        new User(this, userid).setOnReadyListener(new OnReadyListener<User>() {
-            @Override
-            public void onReady(User u) {
-                seller_name.setText(u.name);
-                pl.getProfilePicture(ProductDetailsActivity.this, seller_imageview, u.uid);
-                chatButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        contactSeller(u.uid);
-                    }
-                });
-            }
+        new User(this, userid).setOnReadyListener((OnReadyListener<User>) u -> {
+            seller_name.setText(u.name);
+            pl.getProfilePicture(ProductDetailsActivity.this, seller_imageview, u.uid);
+            chatButton.setOnClickListener(v -> contactSeller(u.uid));
         });
     }
 
@@ -107,7 +106,24 @@ public class ProductDetailsActivity extends AppCompatActivity {
     }
 
     public void favPressed(View v){
-        User.addToFavorites(product.id);
-        Toast.makeText(this, R.string.added_to_favorites, Toast.LENGTH_SHORT).show();
+        if(!faved) {
+            User.addToFavorites(product.id);
+            Toast.makeText(this, R.string.added_to_favorites, Toast.LENGTH_SHORT).show();
+            faved = true;
+            swapFavIcon();
+        } else {
+            User.removeFromFavorites(product.id);
+            Toast.makeText(this, R.string.removed_from_favorites, Toast.LENGTH_SHORT).show();
+            faved = false;
+            swapFavIcon();
+        }
+    }
+
+    public void swapFavIcon() {
+        if (faved) {
+            favButton.setBackground(getResources().getDrawable(R.drawable.faved_button));
+        } else {
+            favButton.setBackground(getResources().getDrawable(R.drawable.fav_button));
+        }
     }
 }

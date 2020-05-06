@@ -1,9 +1,13 @@
 package com.uqac.sellet;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -18,20 +22,20 @@ public class MainActivity extends AppCompatActivity {
     private static final int PICK_PROFILE_PICTURE = 1;
     private static final int PICK_PRODUCT_PICTURE = 2;
 
+    int[] tabIcons = {
+            R.drawable.logo,
+            R.drawable.ic_search_white_24dp,
+            R.drawable.ic_add_circle_outline_white_24dp,
+            R.drawable.ic_chat_bubble_outline_white_24dp,
+            R.drawable.ic_person_outline_white_24dp
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        
         mAuth = FirebaseAuth.getInstance();
-        ViewPager mViewPager = findViewById(R.id.view_pager);
-        mViewPager.setOffscreenPageLimit(4);
-
-        setupViewPager(mViewPager);
-
-        TabLayout tabLayout = findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-
     }
 
     @Override
@@ -41,9 +45,35 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser == null){
             Intent intent = new Intent(this, ConnectionActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, RESULT_OK);
+        } else {
+            startTabs();
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        startTabs();
+    }
+
+    public void startTabs() {
+        ViewPager mViewPager = findViewById(R.id.view_pager);
+        mViewPager.setOffscreenPageLimit(4);
+
+        setupViewPager(mViewPager);
+
+        TabLayout tabLayout = findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
+        for(int i=0; i<tabLayout.getTabCount(); i++){
+            if(tabLayout.getTabAt(i) != null){
+                tabLayout.getTabAt(i).setIcon(tabIcons[i]);
+                if(i>0) tabLayout.getTabAt(i).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.primaryText), PorterDuff.Mode.SRC_IN);
+            }
+        }
     }
 
     /*public void getProduct(View view){
@@ -132,11 +162,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(this, getSupportFragmentManager());
-        adapter.addFragment(new HomeFragment(), "Home");
-        adapter.addFragment(new SearchFragment(), "Search");
-        adapter.addFragment(new AddFragment(), "Add");
-        adapter.addFragment(new ChatsFragment(), "Chats");
-        adapter.addFragment(new ProfileFragment(), "Profile");
+        adapter.addFragment(new HomeFragment(), "");
+        adapter.addFragment(new SearchFragment(), "");
+        adapter.addFragment(new AddFragment(), "");
+        adapter.addFragment(new ChatsFragment(), "");
+        adapter.addFragment(new ProfileFragment(), "");
 
         viewPager.setAdapter(adapter);
     }

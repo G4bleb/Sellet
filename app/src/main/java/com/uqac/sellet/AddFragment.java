@@ -112,8 +112,7 @@ public class AddFragment extends Fragment implements AdapterView.OnItemSelectedL
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // Notify the selected item text
-        Toast.makeText(getContext(), parent.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+        // TODO : CHANGE PRODUCT CATEGORY AND CONDITION
     }
 
     @Override
@@ -129,7 +128,7 @@ public class AddFragment extends Fragment implements AdapterView.OnItemSelectedL
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                categories.add(new Category(document.getId(), document.getData().get("name").toString(), (String) document.getData().get("icon").toString()));
+                                categories.add(new Category(getContext(), document.getId(), document.getData().get("name").toString(), (String) document.getData().get("icon").toString()));
                                 getCategoryNames();
                                 adapter1.notifyDataSetChanged();
                             }

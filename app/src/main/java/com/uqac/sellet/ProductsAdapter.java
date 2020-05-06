@@ -45,6 +45,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
         StorageReference storageReference = storage.getReference();
 
         holder.productName.setText(products.get(position).name);
+        holder.productPrice.setText(Double.toString(products.get(position).price) + "$");
 
         Glide.with(context)
                 .load(storageReference.child(products.get(position).picturesLinks.get(0)))
@@ -67,11 +68,13 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
         OnProductListener onProductListener;
 
         TextView productName;
+        TextView productPrice;
         ImageView picture;
 
         public ViewHolder(@NonNull View itemView, OnProductListener onProductListener) {
             super(itemView);
             productName = itemView.findViewById(R.id.product_name);
+            productPrice = itemView.findViewById(R.id.product_price);
             picture = itemView.findViewById(R.id.product_picture);
             this.onProductListener = onProductListener;
 
