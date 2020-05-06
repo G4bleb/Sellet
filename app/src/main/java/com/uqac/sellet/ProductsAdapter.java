@@ -46,9 +46,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
 
         holder.productName.setText(products.get(position).name);
 
-        Glide.with(context)
-                .load(storageReference.child(products.get(position).picturesLinks.get(0)))
-                .into(holder.picture);
+        if(!products.get(position).picturesLinks.isEmpty()){
+            Glide.with(context)
+                    .load(storageReference.child(products.get(position).picturesLinks.get(0)))
+                    .into(holder.picture);
+        }
     }
 
     @Override

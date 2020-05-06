@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class ChatsFragment extends Fragment {
     private static final String TAG = "ChatsFragment";
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     private LinearLayout listOfChats;
     private ArrayList<User> myContacts = new ArrayList<>();
@@ -33,12 +33,14 @@ public class ChatsFragment extends Fragment {
         View view = inflater.inflate(R.layout.chats_fragment, container, false);
 
         listOfChats = view.findViewById(R.id.chatsList);
-        new Chat().allMyContacts().setOnReadyListener(new OnReadyListener<ArrayList<String>>() {
-            @Override
-            public void onReady(ArrayList<String> contactsIds) {
-                loadUsersfromContacts(contactsIds);
-            }
-        });
+        if(mAuth.getCurrentUser() != null){
+            new Chat().allMyContacts().setOnReadyListener(new OnReadyListener<ArrayList<String>>() {
+                @Override
+                public void onReady(ArrayList<String> contactsIds) {
+                    loadUsersfromContacts(contactsIds);
+                }
+            });
+        }
 
         return view;
     }
