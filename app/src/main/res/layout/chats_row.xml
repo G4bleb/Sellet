@@ -9,38 +9,49 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/profileEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/hisProfilePicture"
             android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
+            android:layout_height="65dp"
+            android:layout_marginStart="40dp"
             android:contentDescription="@string/profile"
             android:src="@drawable/logo"
             app:civ_border_color="#EEEEEE"
-            app:civ_border_width="1.5dp" />
+            app:civ_border_width="2dp" />
 
-        <TextView
-            android:id="@+id/hisName"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="10"
-            android:fontFamily="@font/comfortaa_bold"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="TextView"
-            android:textColor="#EEEEEE"
-            android:textSize="18sp" />
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/hisName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/comfortaa_bold"
+                android:text="@string/profile"
+                android:textColor="#EEEEEE"
+                android:layout_marginStart="20dp"/>
+        </LinearLayout>
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:layout_weight=".5"
-            app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+            android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:contentDescription="@string/chevron"
+            app:srcCompat="@drawable/ic_chevron_right_black_24dp"
+            android:paddingRight="20dp"/>
+
     </LinearLayout>
 
     <TextView
