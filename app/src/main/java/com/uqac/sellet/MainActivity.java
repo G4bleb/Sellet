@@ -19,8 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private FirebaseAuth mAuth;
-    private static final int PICK_PROFILE_PICTURE = 1;
-    private static final int PICK_PRODUCT_PICTURE = 2;
+    private boolean setupDone = false;
 
     int[] tabIcons = {
             R.drawable.logo,
@@ -47,17 +46,20 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ConnectionActivity.class);
             startActivityForResult(intent, RESULT_OK);
         } else {
-            startTabs();
+            if(!setupDone){
+                startTabs();
+                setupDone = true;
+            }
         }
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        startTabs();
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        startTabs();
+//    }
 
     public void startTabs() {
         ViewPager mViewPager = findViewById(R.id.view_pager);

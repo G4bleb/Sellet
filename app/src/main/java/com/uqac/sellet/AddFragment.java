@@ -34,7 +34,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class AddFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "AddFragment";
-    private static final int PICK_PRODUCT_PICTURE = 1;
+    public static final int PICK_PRODUCT_PICTURE = 1;
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -140,8 +140,8 @@ public class AddFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     public void addPicture(View v){
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
         startActivityForResult(intent, PICK_PRODUCT_PICTURE);
     }
 
