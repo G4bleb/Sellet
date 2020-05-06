@@ -12,10 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FieldValue;
 import com.synnapps.carouselview.CarouselView;
-import com.synnapps.carouselview.ImageListener;
 import com.uqac.sellet.entities.OnReadyListener;
 import com.uqac.sellet.entities.PictureLoader;
 import com.uqac.sellet.entities.Product;
@@ -74,7 +71,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             product = p;
             name_textview.setText(product.name);
             desc_textview.setText(product.desc);
-            price_textview.setText(Double.toString(product.price) + "$");
+            price_textview.setText(product.price + "$");
 
             setSeller(product.owner);
 

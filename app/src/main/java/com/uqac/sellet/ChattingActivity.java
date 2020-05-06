@@ -75,7 +75,7 @@ public class ChattingActivity extends AppCompatActivity {
 
     private void addReady(){
         readyCount++;
-        Log.d(TAG, "readyCount: "+ Integer.toString(readyCount));
+        Log.d(TAG, "readyCount: "+ readyCount);
         if(readyCount == READY_TOTAL){
             for (Message msg : chat.messages){
                 addMessageToMessageList(msg);
@@ -94,7 +94,7 @@ public class ChattingActivity extends AppCompatActivity {
 
         ((TextView)(messageView.findViewById(R.id.author))).setText(authorName(msg));
         ((TextView)(messageView.findViewById(R.id.timestamp))).setText(DateFormat.getDateTimeInstance().format(msg.timestamp.toDate()));
-        TextView vcontent = (TextView)(messageView.findViewById(R.id.content));
+        TextView vcontent = messageView.findViewById(R.id.content);
         vcontent.setText(msg.content);
 
         if(isMessageByMe(msg)){

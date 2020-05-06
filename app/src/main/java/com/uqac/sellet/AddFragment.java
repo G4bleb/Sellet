@@ -8,11 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -128,7 +126,7 @@ public class AddFragment extends Fragment implements AdapterView.OnItemSelectedL
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                categories.add(new Category(getContext(), document.getId(), document.getData().get("name").toString(), (String) document.getData().get("icon").toString()));
+                                categories.add(new Category(getContext(), document.getId(), document.getData().get("name").toString(), document.getData().get("icon").toString()));
                                 getCategoryNames();
                                 adapter1.notifyDataSetChanged();
                             }

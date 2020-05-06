@@ -45,7 +45,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
         StorageReference storageReference = storage.getReference();
 
         holder.productName.setText(products.get(position).name);
-        holder.productPrice.setText(Double.toString(products.get(position).price) + "$");
+        holder.productPrice.setText(products.get(position).price + "$");
 
         if(!products.get(position).picturesLinks.isEmpty()){
             Glide.with(context)
